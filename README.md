@@ -1,10 +1,7 @@
 # Tesseract box files creator and editor
 This is very simple editor of tesseract box files for Windows, in which you can create those files from scratch and not just refine tesseract's output.
 
-#Used technologies:
-* .NET 4.6.1
-* C#
-* WPF
+Download binary releases here: https://github.com/EvilVir/tesseract-box-creator/releases
 
 #For now you can:
 
@@ -19,5 +16,7 @@ This is very simple editor of tesseract box files for Windows, in which you can 
 1. Load multipage tiff (most of code is there but needs some pieces to do).
 2. Train your tesseract from this editor - this is just boxes editor, nothing more for now but also much more than anything I could find on the Web.
 
-#
 And yes, I know that some parts of this code could/should be done better. For now I just need simple editor to kickstart my other project, refinements will maybe come later (or you can pull and do some ;).
+
+#Used technologies:
+.NET 4.6.1, C#, WPF
