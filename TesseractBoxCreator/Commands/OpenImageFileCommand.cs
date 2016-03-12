@@ -22,7 +22,7 @@ namespace TesseractBoxCreator.Commands
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Multiselect = false,
-                Filter = "TIFF files|*.tif;*.tiff|JPEG files|*.jpg;*.jpeg|PNG files|*.png|BMP files|*.bmp|All image files|*.tif;*.tiff;*.jpg;*.jpeg;*.png;*.bmp|All files|*.*",
+                Filter = "All image files|*.tif;*.tiff;*.jpg;*.jpeg;*.png;*.bmp|TIFF files|*.tif;*.tiff|JPEG files|*.jpg;*.jpeg|PNG files|*.png|BMP files|*.bmp|All files|*.*",
                 CheckPathExists = true,
                 CheckFileExists = true,
                 AddExtension = true,
@@ -31,6 +31,7 @@ namespace TesseractBoxCreator.Commands
 
             if (dialog.ShowDialog() == true)
             {
+                if (ViewModel.CurrentImage != null) { ViewModel.CurrentImage.Close(); }
                 ViewModel.CurrentImage = new Model.ImageFile(dialog.FileName);
                 ViewModel.Zoom = 1d;
             }

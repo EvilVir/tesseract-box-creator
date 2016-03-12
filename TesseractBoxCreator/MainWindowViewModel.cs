@@ -56,8 +56,9 @@ namespace TesseractBoxCreator
         }
 
 
-        public MainWindowViewModel Finalize()
+        public MainWindowViewModel Close()
         {
+            if (CurrentImage != null) { CurrentImage.Close(); }
             return this;
         }
 

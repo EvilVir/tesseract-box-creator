@@ -106,7 +106,7 @@ namespace TesseractBoxCreator
             }
             else
             {
-                mouseCatchItem = new BoxItem() { Letter = '?', X = (int)p.X, Y = (int)(pageBoxes.Height - p.Y), X2 = (int)p.X, Y2 = (int)(pageBoxes.Height - p.Y) };
+                mouseCatchItem = new BoxItem() { Letter = '?', X = (int)p.X, Y = (int)(pageBoxes.Height - p.Y), X2 = (int)p.X, Y2 = (int)(pageBoxes.Height - p.Y), Page = this.viewModel.CurrentBoxes.Page };
                 viewModel.CurrentBoxes.CurrentPageBoxes.Add(mouseCatchItem);
                 viewModel.CurrentBoxes.SelectedBox = mouseCatchItem;
                 mouseCatchMode = CatchMode.ResizeRight | CatchMode.ResizeBottom;
@@ -172,6 +172,11 @@ namespace TesseractBoxCreator
                 viewModel.CurrentBoxes.SelectedBox = null;
                 e.Handled = true;
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            viewModel.Close();
         }
     }
 }

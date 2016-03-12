@@ -25,8 +25,9 @@ namespace TesseractBoxCreator.Commands
 
         public override bool CanExecute(object parameter)
         {
-            int? targetPage = CalculatePageToJump(parameter);
-            return targetPage != null;
+            return true;
+            //int? targetPage = CalculatePageToJump(parameter);
+            //return targetPage != null;
         }
 
         public override void Execute(object parameter)

@@ -71,6 +71,7 @@
     <Compile Include="Commands\SaveBoxFileCommand.cs" />
     <Compile Include="Commands\ChangeZoomCommand.cs" />
     <Compile Include="Converters\FileNameConverter.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\ObjectsEqualConverter.cs" />
     <Compile Include="Converters\ZoomLevelConverter.cs" />
     <Compile Include="Helpers\BoxFileHelper.cs" />

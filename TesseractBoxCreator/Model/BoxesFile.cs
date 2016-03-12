@@ -14,7 +14,7 @@ namespace TesseractBoxCreator.Model
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected bool _reactOnCurrentPageBoxesChange, _isUnsaved;
+        protected bool _reactOnCurrentPageBoxesChange = true, _isUnsaved;
         protected int _page, _lastPage;
         protected string _filePath;
         protected ObservableCollection<BoxItem> _currentPageBoxes = new ObservableCollection<BoxItem>();
@@ -33,21 +33,30 @@ namespace TesseractBoxCreator.Model
 
         public BoxesFile()
         {
+            _allBoxes = new BoxesList();
             IsUnsaved = true;
+
+            Bind();
         }
 
         public BoxesFile(string path)
         {
             _allBoxes = BoxFileHelper.LoadFromFile(path);
-            _allBoxes.CollectionItemPropertyChanged += AllBoxes_CollectionItemPropertyChanged;
-            _allBoxes.CollectionChanged += AllBoxes_CollectionChanged;
-            _currentPageBoxes.CollectionChanged += CurrentPageBoxes_CollectionChanged;
 
             FilePath = path;
             LastPage = _allBoxes.Count > 0 ? _allBoxes.Max(x => x.Page) : 0;
             Page = 0;
 
             IsUnsaved = false;
+
+            Bind();
+        }
+
+        protected void Bind()
+        {
+            _allBoxes.CollectionItemPropertyChanged += AllBoxes_CollectionItemPropertyChanged;
+            _allBoxes.CollectionChanged += AllBoxes_CollectionChanged;
+            _currentPageBoxes.CollectionChanged += CurrentPageBoxes_CollectionChanged;
         }
 
         public void Save()
@@ -145,12 +154,12 @@ namespace TesseractBoxCreator.Model
         }
 
 
-        void AllBoxes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected void AllBoxes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             IsUnsaved = true;
         }
 
-        void AllBoxes_CollectionItemPropertyChanged(object sender, BoxesList.CollectionItemPropertyChangedEventArgs e)
+        protected void AllBoxes_CollectionItemPropertyChanged(object sender, BoxesList.CollectionItemPropertyChangedEventArgs e)
         {
             IsUnsaved = true;
         }

@@ -3,15 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:TesseractBoxCreator"
         xmlns:local_converters="clr-namespace:TesseractBoxCreator.Converters"
-        Title="Tesseract Box Creator" Height="722.833" Width="1236.667" WindowState="Maximized" Name="window">
+        Title="Tesseract Box Creator" Height="722.833" Width="1236.667" WindowState="Maximized" Name="window" Closing="Window_Closing">
     
     <Window.Resources>
         <local_converters:FileNameConverter x:Key="FileNameConverter"/>
         <local_converters:ZoomLevelConverter x:Key="ZoomLevelConverter"/>
         <local_converters:ObjectsEqualConverter x:Key="ObjectsEqualConverter"/>
+        <local_converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
-    
-    <Grid>
+
+    <Grid IsEnabled="{Binding CurrentImage.IsLoading, Converter={StaticResource InverseBooleanConverter}}">
         <ToolBarPanel Height="29" VerticalAlignment="Top" Margin="0,0,0,0">
             <ToolBar HorizontalAlignment="Left">
                 <Button Command="{Binding OpenImageFileCommand}">Open image...</Button>
@@ -24,7 +26,7 @@
 
         <Grid Margin="0,29,-0.333,25.667">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -36,11 +38,21 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <DataGrid Grid.Row="0" ItemsSource="{Binding CurrentBoxes.CurrentPageBoxes}" SelectedItem="{Binding CurrentBoxes.SelectedBox}" CanUserAddRows="False" Name="pageBoxesGrid">
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding CurrentBoxes.CurrentPageBoxes}" SelectedItem="{Binding CurrentBoxes.SelectedBox}" CanUserAddRows="False" Name="pageBoxesGrid" AutoGenerateColumns="False">
                         <DataGrid.Resources>
                             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource {x:Static SystemColors.HighlightColorKey}}" />
                             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{StaticResource {x:Static SystemColors.HighlightTextColorKey}}" />
                         </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Letter" Binding="{Binding Letter}" />
+                            <DataGridTextColumn Header="X" Binding="{Binding X}" />
+                            <DataGridTextColumn Header="Y" Binding="{Binding Y}" />
+                            <DataGridTextColumn Header="X2" Binding="{Binding X2}" />
+                            <DataGridTextColumn Header="Y2" Binding="{Binding Y2}" />
+                            <DataGridTextColumn Header="Width" Binding="{Binding Width}" />
+                            <DataGridTextColumn Header="Height" Binding="{Binding Height}" />
+                            <DataGridTextColumn Header="Page" Binding="{Binding Page}" IsReadOnly="True" />
+                        </DataGrid.Columns>
                     </DataGrid>
 
                     <Grid Grid.Row="1">
@@ -70,7 +82,7 @@
                                 <ScaleTransform ScaleX="{Binding Zoom}" ScaleY="{Binding Zoom}"/>
                             </Grid.LayoutTransform>
                             <Border BorderThickness="0,0,1,1" BorderBrush="DarkGray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ElementName=pageImage, Path=Width}" Height="{Binding ElementName=pageImage, Path=Height}">
-                                <Image HorizontalAlignment="Left" VerticalAlignment="Top" Name="pageImage" Source="{Binding CurrentImage.CurrentPageImage}" Width="{Binding CurrentImage.CurrentPageImage.PixelWidth}" Height="{Binding CurrentImage.CurrentPageImage.PixelHeight}" Stretch="None"/>
+                                <Image HorizontalAlignment="Left" VerticalAlignment="Top" Name="pageImage" Source="{Binding CurrentImage.CurrentPageImage}" Width="{Binding CurrentImage.CurrentPageImage.PixelWidth}" Height="{Binding CurrentImage.CurrentPageImage.PixelHeight}" Stretch="Fill"/>
                             </Border>
                             <ItemsControl Name="pageBoxes" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ElementName=pageImage, Path=Width}" Height="{Binding ElementName=pageImage, Path=Height}" Background="Transparent" ItemsSource="{Binding CurrentBoxes.CurrentPageBoxes}" MouseDown="ItemsControl_MouseDown" MouseUp="ItemsControl_MouseUp" MouseMove="ItemsControl_MouseMove">
                                 <ItemsControl.ItemsPanel>
@@ -152,6 +164,8 @@
                     </Label.Style>
                 </Label>
             </StackPanel>
+
+            <ProgressBar Margin="5" IsIndeterminate="False" Panel.ZIndex="3" Maximum="100" Minimum="0" Value="{Binding CurrentImage.LoadingProgress, Mode=OneWay}" Visibility="{Binding CurrentImage.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Label Content="{Binding CurrentImage.Page}" Margin="0,0,5,0"/>
