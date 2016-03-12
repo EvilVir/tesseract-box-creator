@@ -2,6 +2,7 @@
 This is very simple editor of tesseract box files for Windows, in which you can create those files from scratch and not just refine tesseract's output.
 
 [Download binary releases here](https://github.com/EvilVir/tesseract-box-creator/releases)
+
 [Grab source code here](https://github.com/EvilVir/tesseract-box-creator.git)
 
 ##For now you can:
