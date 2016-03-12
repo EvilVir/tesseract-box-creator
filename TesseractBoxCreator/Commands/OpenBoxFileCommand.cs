@@ -31,7 +31,7 @@ namespace TesseractBoxCreator.Commands
 
             if (dialog.ShowDialog() == true)
             {
-                ViewModel.LoadBoxFile(dialog.FileName);
+                this.ViewModel.CurrentBoxes = new Model.BoxesFile(dialog.FileName);
             }
 
             this.CanBeExecuted = true;

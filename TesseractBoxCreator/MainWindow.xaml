@@ -17,7 +17,7 @@
                 <Button Command="{Binding OpenImageFileCommand}">Open image...</Button>
                 <Button Command="{Binding OpenBoxFileCommand}">Open box file...</Button>
                 <Separator/>
-                <Button Command="{Binding SaveBoxFileCommand}" CommandParameter="{Binding CurrentBoxFilePath, Mode=OneWay, NotifyOnSourceUpdated=True}">Save box file</Button>
+                <Button Command="{Binding SaveBoxFileCommand}" CommandParameter="{Binding CurrentBoxes.FilePath, Mode=OneWay, NotifyOnSourceUpdated=True}">Save box file</Button>
                 <Button Command="{Binding SaveBoxFileAsCommand}">Save box file as...</Button>
             </ToolBar>
         </ToolBarPanel>
@@ -36,7 +36,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <DataGrid Grid.Row="0" ItemsSource="{Binding CurrentPageBoxes}" SelectedItem="{Binding SelectedBox}" CanUserAddRows="False">
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding CurrentBoxes.CurrentPageBoxes}" SelectedItem="{Binding CurrentBoxes.SelectedBox}" CanUserAddRows="False" Name="pageBoxesGrid">
                         <DataGrid.Resources>
                             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource {x:Static SystemColors.HighlightColorKey}}" />
                             <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{StaticResource {x:Static SystemColors.HighlightTextColorKey}}" />
@@ -45,7 +45,7 @@
 
                     <Grid Grid.Row="1">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Button Margin="5" Padding="5" Command="{Binding ClearBoxesCommand}" CommandParameter="{Binding CurrentPage}">Clear page</Button>
+                            <Button Margin="5" Padding="5" Command="{Binding ClearBoxesCommand}" CommandParameter="{Binding CurrentImage.Page}">Clear page</Button>
                             <Button Margin="5" Padding="5" Command="{Binding ClearBoxesCommand}">Clear all</Button>
                         </StackPanel>
                     </Grid>
@@ -64,15 +64,15 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <ScrollViewer Name="pageScrollViewer" Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                    <ScrollViewer Name="pageScrollViewer" Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" KeyUp="PageScrollViewer_KeyUp">
                         <Grid Width="Auto" Height="Auto">
                             <Grid.LayoutTransform>
                                 <ScaleTransform ScaleX="{Binding Zoom}" ScaleY="{Binding Zoom}"/>
                             </Grid.LayoutTransform>
                             <Border BorderThickness="0,0,1,1" BorderBrush="DarkGray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ElementName=pageImage, Path=Width}" Height="{Binding ElementName=pageImage, Path=Height}">
-                                <Image HorizontalAlignment="Left" VerticalAlignment="Top" Name="pageImage" Source="{Binding CurrentImage}" Width="{Binding CurrentImage.PixelWidth}" Height="{Binding CurrentImage.PixelHeight}" Stretch="None"/>
+                                <Image HorizontalAlignment="Left" VerticalAlignment="Top" Name="pageImage" Source="{Binding CurrentImage.CurrentPageImage}" Width="{Binding CurrentImage.CurrentPageImage.PixelWidth}" Height="{Binding CurrentImage.CurrentPageImage.PixelHeight}" Stretch="None"/>
                             </Border>
-                            <ItemsControl Name="pageBoxes" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ElementName=pageImage, Path=Width}" Height="{Binding ElementName=pageImage, Path=Height}" Background="Transparent" ItemsSource="{Binding CurrentPageBoxes}" MouseDown="ItemsControl_MouseDown" MouseUp="ItemsControl_MouseUp" MouseMove="ItemsControl_MouseMove">
+                            <ItemsControl Name="pageBoxes" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ElementName=pageImage, Path=Width}" Height="{Binding ElementName=pageImage, Path=Height}" Background="Transparent" ItemsSource="{Binding CurrentBoxes.CurrentPageBoxes}" MouseDown="ItemsControl_MouseDown" MouseUp="ItemsControl_MouseUp" MouseMove="ItemsControl_MouseMove">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
@@ -88,7 +88,7 @@
                                                             <DataTrigger.Binding>
                                                                 <MultiBinding Converter="{StaticResource ObjectsEqualConverter}">
                                                                     <Binding Path=""/>
-                                                                    <Binding ElementName="window" Path="DataContext.SelectedBox"/>
+                                                                    <Binding ElementName="window" Path="DataContext.CurrentBoxes.SelectedBox"/>
                                                                 </MultiBinding>
                                                             </DataTrigger.Binding>
                                                             <Setter Property="Background" Value="#7F0003BC"/>
@@ -139,14 +139,24 @@
 
         <Grid Margin="0,0,0,0" VerticalAlignment="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Label Content="{Binding CurrentImageFilePath, Converter={StaticResource FileNameConverter}, ConverterParameter='No image'}" Margin="0,0,5,0"/>
-                <Label Content="{Binding CurrentBoxFilePath, Converter={StaticResource FileNameConverter}, ConverterParameter='New box file'}"/>
+                <Label Content="{Binding CurrentImage.FilePath, Converter={StaticResource FileNameConverter}, ConverterParameter='No image'}" Margin="0,0,5,0"/>
+                <Label Content="{Binding CurrentBoxes.FilePath, Converter={StaticResource FileNameConverter}, ConverterParameter='New box file'}">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentBoxes.IsUnsaved}"  Value="true">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Label Content="{Binding CurrentPage}" Margin="0,0,5,0"/>
+                <Label Content="{Binding CurrentImage.Page}" Margin="0,0,5,0"/>
                 <Label Content=" / " Margin="0,0,5,0"/>
-                <Label Content="{Binding LastPage}"/>
+                <Label Content="{Binding CurrentImage.LastPage}"/>
             </StackPanel>
         </Grid>
     </Grid>

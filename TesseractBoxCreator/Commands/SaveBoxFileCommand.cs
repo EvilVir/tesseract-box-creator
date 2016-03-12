@@ -21,15 +21,18 @@ namespace TesseractBoxCreator.Commands
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "CurrentBoxFilePath")
+            if (e.PropertyName == "CurrentBoxes")
             {
-                this.CanBeExecuted = this.ViewModel.CurrentBoxFilePath != null;
+                this.CanBeExecuted = this.ViewModel.CurrentBoxes != null && this.ViewModel.CurrentBoxes.FilePath != null;
             }
         }
 
         public override void Execute(object parameter)
         {
-            this.ViewModel.SaveBoxFile((string)parameter);
+            if (this.ViewModel.CurrentBoxes != null)
+            {
+                this.ViewModel.CurrentBoxes.Save();
+            }
         }
     }
 }

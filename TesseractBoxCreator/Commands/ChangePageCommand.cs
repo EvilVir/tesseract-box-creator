@@ -34,19 +34,24 @@ namespace TesseractBoxCreator.Commands
             int? targetPage = CalculatePageToJump(parameter);
             if (targetPage != null)
             {
-                this.ViewModel.GoToImagePage(targetPage.Value);
+                this.ViewModel.CurrentImage.Page = targetPage.Value;
             }
         }
 
         protected int? CalculatePageToJump(object parameter)
         {
-            string jump = (string)parameter;
-            bool relativeJump = jump.StartsWith("+") || jump.StartsWith("-");
-            int value = Int32.Parse(jump);
+            if (this.ViewModel.CurrentImage != null)
+            {
+                string jump = (string)parameter;
+                bool relativeJump = jump.StartsWith("+") || jump.StartsWith("-");
+                int value = Int32.Parse(jump);
 
-            int targetPage = relativeJump ? this.ViewModel.CurrentPage + value : value;
+                int targetPage = relativeJump ? this.ViewModel.CurrentImage.Page + value : value;
 
-            return targetPage >= 0 && targetPage <= this.ViewModel.LastPage ? (int?)targetPage : null;
+                return targetPage >= 0 && targetPage <= this.ViewModel.CurrentImage.LastPage ? (int?)targetPage : null;
+            }
+
+            return null;
         }
     }
 }

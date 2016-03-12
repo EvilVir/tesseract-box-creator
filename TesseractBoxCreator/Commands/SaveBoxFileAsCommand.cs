@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TesseractBoxCreator.Model;
 
 namespace TesseractBoxCreator.Commands
 {
@@ -29,7 +30,12 @@ namespace TesseractBoxCreator.Commands
 
             if (dialog.ShowDialog() == true)
             {
-                this.ViewModel.SaveBoxFile(dialog.FileName);
+                if (this.ViewModel.CurrentBoxes == null)
+                {
+                    this.ViewModel.CurrentBoxes = new BoxesFile();
+                }
+
+                this.ViewModel.CurrentBoxes.Save(dialog.FileName);
             }
 
             this.CanBeExecuted = true;

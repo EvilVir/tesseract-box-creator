@@ -31,7 +31,8 @@ namespace TesseractBoxCreator.Commands
 
             if (dialog.ShowDialog() == true)
             {
-                ViewModel.LoadImage(dialog.FileName);
+                ViewModel.CurrentImage = new Model.ImageFile(dialog.FileName);
+                ViewModel.Zoom = 1d;
             }
 
             this.CanBeExecuted = true;

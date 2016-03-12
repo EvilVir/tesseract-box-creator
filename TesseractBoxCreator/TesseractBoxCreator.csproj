@@ -81,8 +81,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Model\BoxesFile.cs" />
     <Compile Include="Model\BoxesList.cs" />
     <Compile Include="Model\BoxItem.cs" />
+    <Compile Include="Model\ImageFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

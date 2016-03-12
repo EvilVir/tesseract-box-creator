@@ -14,7 +14,7 @@ namespace TesseractBoxCreator.Commands
         }
         public override void Execute(object parameter)
         {
-            this.ViewModel.DeleteBoxes(parameter != null ? (int?)parameter : null);
+            //this.ViewModel.DeleteBoxes(parameter != null ? (int?)parameter : null);
         }
     }
 }

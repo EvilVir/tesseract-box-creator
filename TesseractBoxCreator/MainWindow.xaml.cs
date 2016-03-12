@@ -80,7 +80,7 @@ namespace TesseractBoxCreator
             if (element != null && item != null)
             {
                 mouseCatchItem = item;
-                viewModel.SelectedBox = item;
+                viewModel.CurrentBoxes.SelectedBox = item;
 
                 Point offsetP = e.GetPosition(element);
 
@@ -106,8 +106,9 @@ namespace TesseractBoxCreator
             }
             else
             {
-                mouseCatchItem = viewModel.AddBox(p.X, pageBoxes.Height - p.Y, p.X, pageBoxes.Height - p.Y);
-                viewModel.SelectedBox = mouseCatchItem;
+                mouseCatchItem = new BoxItem() { Letter = '?', X = (int)p.X, Y = (int)(pageBoxes.Height - p.Y), X2 = (int)p.X, Y2 = (int)(pageBoxes.Height - p.Y) };
+                viewModel.CurrentBoxes.CurrentPageBoxes.Add(mouseCatchItem);
+                viewModel.CurrentBoxes.SelectedBox = mouseCatchItem;
                 mouseCatchMode = CatchMode.ResizeRight | CatchMode.ResizeBottom;
                 mouseCatchOffset = new Offsets();
             }
@@ -160,6 +161,16 @@ namespace TesseractBoxCreator
                 }
 
                 mouseCatchItem.NotifyPropertyChangedEventDisabled = false;
+            }
+        }
+
+        private void PageScrollViewer_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete && viewModel.CurrentBoxes != null && viewModel.CurrentBoxes.SelectedBox != null)
+            {
+                viewModel.CurrentBoxes.CurrentPageBoxes.Remove(viewModel.CurrentBoxes.SelectedBox);
+                viewModel.CurrentBoxes.SelectedBox = null;
+                e.Handled = true;
             }
         }
     }
