@@ -2,7 +2,7 @@
 This is very simple editor of tesseract box files for Windows, in which you can create those files from scratch and not just refine tesseract's output.
 
 #Used technologies:
-* .NET 4.5
+* .NET 4.6.1
 * C#
 * WPF
 

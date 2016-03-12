@@ -22,7 +22,7 @@ namespace TesseractBoxCreator.Commands
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Multiselect = false,
-                Filter = "TIFF files|*.tif;*.tiff",
+                Filter = "TIFF files|*.tif;*.tiff|JPEG files|*.jpg;*.jpeg|PNG files|*.png|BMP files|*.bmp|All image files|*.tif;*.tiff;*.jpg;*.jpeg;*.png;*.bmp|All files|*.*",
                 CheckPathExists = true,
                 CheckFileExists = true,
                 AddExtension = true,

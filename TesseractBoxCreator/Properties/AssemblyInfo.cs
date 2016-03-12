@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TesseractBoxCreator")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Tesseract Box Creator")]
+[assembly: AssemblyDescription("Tesseract Box Creator")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Kuba Pilecki")]
 [assembly: AssemblyProduct("TesseractBoxCreator")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © Kuba Pilecki 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
